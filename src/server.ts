@@ -3,6 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import apiRoutes from './routes/api';
+import passport, { Passport } from 'passport';
 
 dotenv.config();
 
@@ -12,6 +13,8 @@ server.use(cors());
 
 server.use(express.static(path.join(__dirname, '../public')));
 server.use(express.urlencoded({ extended: true }));
+
+server.use(passport.initialize())
 
 server.get('/ping', (req: Request, res: Response) => res.json({ pong: true }));
 
