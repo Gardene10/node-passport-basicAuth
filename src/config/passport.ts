@@ -10,7 +10,7 @@ const notAuthorizedJson = {status: 401, message: 'Não autorizado'}
 passport.use(new BasicStrategy(async (email,password, done)=>{
     if(email && password){
         const user = await User.findOne({
-            where: {email, passport}
+            where: {email, password}
         })
         if (user){
             return done(null,user)
@@ -23,6 +23,7 @@ passport.use(new BasicStrategy(async (email,password, done)=>{
 // middleware
 export const privateRoute = (req: Request, res:Response, next: NextFunction) => {
      passport.authenticate('basic', (err: Error,user:UserInstance) => {
+        req.user = user
         return user ? next() : next(notAuthorizedJson)
     })(req,res,next)
 
